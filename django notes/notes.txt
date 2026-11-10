@@ -1,0 +1,188 @@
+What is framework:
+    framework is set of conceptual structure and guideline, used to build structure.
+
+
+web framework
+    its provide tools and library to build common web application development.
+    its also provide session management , databse management to code reuse.
+    varities of task
+
+
+WSGI vs ASGI
+    web server getway interface
+    web server getway interface -> its take single request at a time
+
+ASGI
+    Asyncronous getway interface
+    its take multiple request at a time
+    its continus request its can handle
+
+How to create Cache in django
+    1. template feaqment chache
+    2. per site Cache
+    3. database Cache
+
+    python mange.py createcachetable
+
+How to craete cookie
+    def setcookie(request):
+        response = render(requestm, "home.html")
+        response.set_cookie("name", "sonam")
+        return response
+    
+How to get cookies
+
+def getcookies(request):
+    name =request.COOKIES['name']
+
+How to delete cookies
+    def delcookies(request):
+        response = render(requestm, "home.html")
+        response.delete_cookie()
+
+
+How to craete session
+def setdatasession(request):
+    request.session['name'] = 'Rahul'
+    return render(request, "home.html")
+
+def getdatasession(request):
+    name  = request.session['name']
+    request.session_modified = True
+    return render(request, "home.html")
+
+Two type session store
+
+1. File based session : store in file
+2.server lever session :- store in server
+
+
+
+Signal
+---------------------------
+from django.contrib.auth.signals import  user_logged_out, user_logged_in,user_login_failed
+from django.db.models.signals import (pre_init,pre_save,pre_delete,
+    post_init,post_save,post_delete  )
+from django.db.backend.signal import connection_created
+
+Model Inheritance
+----------------------------------
+Model Inheritance 
+***********************
+Abstract Base Class 
+MultiTable Inheritance 
+Proxy Model 
+
+"""""""""""""""""""""""""""""""
+Model Manager
+"""""""""""""""""""""""""""""""
+write Model Manager
+
+class CustomManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by('name)
+
+
+
+Associate with Model
+----------------------
+class Student(models.Model):
+    object = models.Manager()
+    students = CustomManager()
+
+
+Model Relationship
+----------------------------
+
+OnetoOne Relationship -> only one data field persent in db (user table and page table, (OnetoOne fields)  ) 
+
+ManytoOne Relationship -> many data should be prent into one table (Foreign Key)
+
+ManyToMany Fields -> Manyuser can be sing song (ManyToMany fields)
+
+
+Views
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Function Based Views
+-------------------------------
+
+def my(request):
+    return render(request, "home.html")
+
+
+Class Based Views
+++++++++++++++++++++++++++++++++++++++
+
+from django.view import View
+
+class HomeClassView(View):
+    def get(self, request):
+        return render(request, "home.html")
+
+Template View With Cotext
++++++++++++++++++++++++++++++++++++++++++++++
+
+from django.views.generic.base import TemplateView
+
+class HomeView(TemplateView):
+    template_name = "home.html"
+
+    def get_context_dta(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = 'Sonam'
+        return context
+
+RedirectView 
++++++++++++++++++++++++++++++++
+
+
+Generic class based view 
++++++++++++++++++++++++++++
+1. ListView
+2. CreateView
+3. UpdateView
+4. Delete View
+
+
+login and logout
++++++++++++++++++++++++++++++++++++++
+
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorator import login_required
+
+@method_decorator(login_required)
+def function()
+    pass
+
+Authentication
+++++++++++++++++++++++++++++++++++++++++++++++
+
+from django.contrib.auth import authenticate, login
+
+def my_view(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        ...
+    else:
+        # Return an 'invalid login' error message.
+        ...
+
+"""
+logout
+**************************************
+from django.contrib.auth import logout
+def logout_view(request):
+    logout(request)
+
+
+def my_view(request):
+    if not request.user.is_authenticated:
+
+
+from django.contrib.auth.decorators import login_required
+@login_required(login_url="/accounts/login/")
+def my_view(request):

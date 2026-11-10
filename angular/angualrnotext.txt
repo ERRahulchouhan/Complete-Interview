@@ -1,0 +1,5 @@
+npm install -g @angular/cli
+
+interpolation is {{  }} from ts file to html
+
+ng generate component my

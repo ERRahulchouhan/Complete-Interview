@@ -1,0 +1,156 @@
+Python
+++++++++++++++++++++++++++++
+python is clean and powerfull object oriented programming
+
+++++++++++++++++++++++++++++++
+
+soucre code  ===>  byte code (Python compiler) ===>  machine code
+
+++++++++++++++++++++++++++++++++++++++++
+
+identifier ==> Identifier is a name given to entities like class, function, variable
+
+++++++++++++++++++++++++++++++++++++++++++++
+
+keywords ==> keyword is reversed word, using this we can create the python program
+
++++++++++++++++++++++++++++++++++++++++
+
+constant ==> we can not change the value but in python is not support
+
+++++++++++++++++++++++++++++++++++++++++++
+variable is a temp memory location, which is store the value temporary purpose.
+
++++++++++++++++++++++++++++++++++++++++++++++++
+
+Data type ===>  number , bollean,None ,set, dict, sequence type ==> string, tuple, list, range
+
+++++++++++++++++++++++++++++++++++++++++
+
+implicit type ==>  automatic convert one type to another type like divide
+explict type  ==> convert the one data type into another data type.
+
+type()
+int()
+float()
+str()
+list()
+tuple()
+dict()
+++++++++++++++++++++++++++++++++++++++++++
+
+output statment ===>
+using print()
+
++++++++++++++++++++++++++++++++++++
+
+using input() to get input rom user
+
+++++++++++++++++++++++++++++++++++
+\n
+\t ==> horizontal
+\v  ==> vertical
+
+\\
+\'
+\"
++++++++++++++++++++
+
+if , if else, if, elif , else
++++++++++++++++++++++++++++++++
+a = 1
+while a < 10:
+    print("yes")
+    a +=1
+
+++++++++++++++++++++++++++++++++
+range(start, stop, step)
+
+++++++++++++++++++++++++++++++
+for i in []:
+    print("i", i )
+else:
+    print("yes")
+
+++++++++++++++++++++++++++++++++
+
+for i in []:
+    if  i ==1:
+        break
+
++++++++++++++++++++++++++++++++++
+
+pass ==> use in if and loop. will perform null operation
+
++++++++++++++++++++++++++++++++
+
+format method
+
+"{}".format(111)
+
+f"{var}"
+
++++++++++++++++++++++++++++++++++
+function
+
+def my():
+    print("hi")
+++++++++++++++++++++++++++
+nested function
+
+def my():
+    def show():
+        print("heuee")
+    print("hi")
+    show()
+
+my()
+
+++++++++++++++++++++++++++++++++
+lambda 
+
+show = lambda x: print(x)
+show(10)
+
+show = lambda x,y: (x+y, x-y)
+
+++++++++++++++++++++++++++++++++++++++
+
+global keyword
+
+++++++++++++++++++++++++++++
+
+decorator function
+
+def decorator_function(any_function):
+    def wrapper+function():
+        print("this is swesom function"))
+        any_function()
+    return wrapper_function
+
+def func1():
+    print("yess")
+
+#############calling decorator function
+v = decorator_function(func1)
+v()
+
++++++++++++++++++++++++++++++
+
+@decorator_function
+def func1():
+    print("yess")
+
++++++++++++++++++++++++++++++++
+math function
+
+floof(4.5)
+ceil(4.5)
+sqrt(49)
+factorial(5)
+pow(5,2)
+
+
+
+
+

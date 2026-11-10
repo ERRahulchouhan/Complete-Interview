@@ -1,0 +1,6 @@
+oops stand for object oriented programming
+
+oops is a mechnish yo write the program using class and function
+
+***************************************************
+

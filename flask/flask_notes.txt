@@ -1,0 +1,298 @@
+Installed 
+**************
+pip install Flask
+
+"""*************************"""
+    curl -X GET -H "Content-Type: application/json"  http://127.0.0.1:8000/
+
+"""************************"""
+
+******************************
+run application
+_________________________
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+
+*********************************
+methods declaration
+
+********************************
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Handle login form submission
+        username = request.form['username']
+        password = request.form['password']
+        # Perform authentication and redirect to dashboard
+    else:
+        # Render the login form for GET request
+        return render_template('login.html')
+
+***********************
+render_template
+**************************
+
+@app.route('/user/<name>')
+def user(name):
+    return render_template('user.html', username=name)
+
+""""
+Start Simple Application with Port
+*******************************************
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/' , methods=['GET'])
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8000)
+
+******************************************************************
+What is Jsonfy in flask
+******************************************************************
+
+from flask import Flask,jsonify
+app = Flask(__name__)
+
+@app.route('/' , methods=['GET'])
+def hello():
+    return jsonify({"yes":"1111"})
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8000)
+
+***********************************************************************
+How to read Url data and pass use in 
+*****************************************************************
+
+@app.route('/lang/<string:name>/' , methods=['GET'])
+def check_lan(name):
+    return jsonify(list_data.get(name))
+
+***************************************************************
+How to Read Post data 
+***********************************************************
+@app.route('/addlang/' , methods=['POST'])
+def add_lan():
+    data =  request.json['new']
+    return data
+
+**********************************************************
+load render_template
+
+******************************
+
+@app.route('/get_template/' , methods=['GET'])
+def get_template_data():
+    return render_template("home.html",name="Rahul")
+
+create tempaltes folder and create home.html file
+***************************************************************
+
+Upload file 
+*************************************************
+
+@app.before_request
+def before_request_func():
+    print("Before each request is executed.")
+    
+
+@app.after_request
+def after_request_func(response):
+    print(f"After {request.method} request to {request.url} - Status Code: {response.status_code}")
+    return response
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+**************************************************************
+upload file 
+**************************************************************
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # Check if a file was uploaded in the request
+        if 'file' not in request.files:
+            return 'No file part'
+
+        file = request.files['file']
+
+        # If the user does not select a file, the browser submits an empty part
+        if file.filename == '':
+            return 'No selected file'
+
+        # Save the uploaded file to the 'uploads' directory
+        file.save('uploads/' + file.filename)
+        return 'File uploaded successfully'
+
+    return render_template('upload.html')
+
+********************************************************
+redirect using anchor tag
+
+    <p>Go to the <a href="{{ url_for('about') }}">About page</a>.</p>
+
+***********************************************************
+create cookies
+
+@app.route('/')
+def set_cookie():
+    response = make_response('Cookie has been set!')
+    response.set_cookie('username', 'john_doe', max_age=3600)  # Cookie expires in 1 hour
+    return response
+
+*****************************************************************
+
+get cookies
+
+@app.route('/read')
+def read_cookie():
+    username = request.cookies.get('username')
+    return f'The username in the cookie is: {username}'
+
+********************************************************************
+"""flask_classy"""
+
+
+from flask import Flask
+from flask_classy import FlaskView
+app = Flask(__name__)
+
+class MyView(FlaskView):
+
+    def index(self):
+        return "Welcome to the homepage!"
+
+    def about(self):
+        return "This is the about page."
+
+MyView.register(app)
+
+**********************************************************************
+
+pip install Flask-Mail
+
+from flask import Flask
+from flask_mail import Mail, Message
+
+app = Flask(__name__)
+
+# Flask-Mail configuration
+app.config['MAIL_SERVER'] = 'smtp.example.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'your_email@example.com'
+app.config['MAIL_PASSWORD'] = 'your_email_password'
+
+mail = Mail(app)
+
+
+from flask import render_template
+
+@app.route('/send_email')
+def send_email():
+    recipients = ['recipient@example.com']
+    subject = 'Welcome to our Flask app!'
+    sender = app.config['MAIL_USERNAME']
+
+    # Render the email template (optional)
+    body = render_template('email_template.html')
+
+    # Alternatively, you can set the body directly
+    # body = 'This is the email body.'
+
+    message = Message(subject=subject, sender=sender, recipients=recipients)
+    message.body = body
+
+    # Send the email
+    mail.send(message)
+
+    return 'Email sent successfully!'
+
+******************************************************************
+Using blueprint we can create new app in flask
+
+
+from flask import Flask, render_template
+from flask import Blueprint
+
+# Create the Flask app
+app = Flask(__name__)
+
+# Create a Blueprint named 'my_blueprint'
+my_blueprint = Blueprint('my_blueprint', __name__, url_prefix='/blueprint')
+
+# Define a route inside the Blueprint
+@my_blueprint.route('/')
+def index():
+    return 'Welcome to the Blueprint!'
+
+# Register the Blueprint with the app
+app.register_blueprint(my_blueprint)
+
+# Define a route for the main app
+@app.route('/')
+def main_index():
+    return 'Welcome to the main app!'
+
+# Run the app
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+**********************************************************************
+
+pip install Flask-Security
+
+*******************************************************
+
+Custome Manager from commond line
+
+from flask import Flask
+from flask_script import Manager
+
+app = Flask(__name__)
+manager = Manager(app)
+
+@manager.command
+def custom_command():
+    print("This is a custom command.")
+
+if __name__ == '__main__':
+    manager.run()
+
+******************************************************************
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.context_processor
+def my_context_processor():
+    global_variable = "This is a global variable."
+    return {"global_variable": global_variable}
+
+from flask import render_template
+
+@app.route('/')
+def index():
+    return render_template('template.html')
+
+
+***********************************************************

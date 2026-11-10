@@ -1,0 +1,178 @@
+
+API
+    application programming interface
+
+Rest:
+ Rest is a guide line which use to write rest api
+
+***********************************
+
+ import json
+
+d = { 'dd' : 11}
+data = json.dumps(d)  # create json data for python
+datajson = json.load(data) # convert to json data
+
+***********************************
+Serializer:
+    Serializer is a technique for converting the complex data such as queryset
+    and model intance to native python data type
+
+    De-Serializer is a technique parse the data to complex data type
+
+
+1. Serialize 
+2. ModelSerializer
+
+************************************
+
+1. Serialize 
+__________________________
+
+# serializers.py
+from rest_framework import serializers
+
+class BookSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=100)
+    author = serializers.CharField(max_length=100)
+    published_date = serializers.DateField()
+    isbn = serializers.CharField(max_length=13)
+
+    def create(self, validated_data):
+        return Book.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.author = validated_data.get('author', instance.author)
+        instance.published_date = validated_data.get('published_date', instance.published_date)
+        instance.isbn = validated_data.get('isbn', instance.isbn)
+        instance.save()
+        return instance
+
+b ṁnbv 
+validation
+    serializer.ValidationError
+
+ModelSerializer
+
+    class StudentModelSerializer(serializer.ModelSerializer):
+        class Meta:
+            model = student
+            fields = [ 'name']
+            fields = '__name__'
+
+
+Function Base API
+*********************************************
+from rest_framework.respose import Response
+from rest_framework.decorators import api_View
+
+
+@api_View(['GET'])
+def hello_world(request):
+    return Response({"mes":"data"})
+
+
+Class APIVIEW
+*********************************
+from rest_framework.views import APIVIEW
+
+class StudentAPI(APIVIEW):
+    def get(self, request, pk=None, format=None):
+        return Response({"message":"data"})
+
+    def post(self, request, pk=None, format=None):
+        return Response({"message":"data"})
+
+    def put(self, request, pk=None, format=None):
+        return Response({"message":"data"})
+    
+    def delete(self, request, pk=None, format=None):
+        return Response({"message":"data"})
+
+
+GenericAPIVIEW
+********************************
+from rest_framework.generics import GenericAPIVIEW
+from rest_framework.mixins import ListModelMixin
+
+class StudentList(GenericAPIVIEW, ListModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentModelSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+Concrete View Class in Django REST Framework (Hindi)
+***************************************
+from rest_framework.generics import ListAPIView
+
+
+class StudentList(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class =  StduentSerializer
+
+ViewSet
+*******************************
+
+1. combination is set of logic for related views in single clss views
+is claled viewset
+
+2. Repeted login into single class
+
+3. by using router no need to maintain urls
+
+viewset
+********************************************
+
+from rest_framework.routers import DefaultRouter
+from .views import BookViewSet
+
+router = DefaultRouter()
+router.register(r'books', BookViewSet)
+
+list(self, request): Handles GET requests to retrieve a list of resources.
+create(self, request): Handles POST requests to create a new resource.
+retrieve(self, request, pk=None): Handles GET requests to retrieve a specific resource identified by its primary key (pk).
+update(self, request, pk=None): Handles PUT requests to update an existing resource identified by its primary key (pk).
+partial_update(self, request, pk=None): Handles PATCH requests to perform a partial update on an existing resource identified by its primary key (pk).
+destroy(self, request, pk=None): Handles DELETE requests to delete an existing resource identified by its primary key (pk).
+
+
+*********************************
+ModelViewset
+*************************************
+class StudentModelViewSet(viewset.ModelViewset):
+    queryset = Student.objects.all()
+    serializer_class = StduentSerializer
+
+
+
+Functionality: APIView is a class-based view that provides methods
+ corresponding to different HTTP methods (e.g., get(), post(), put(), etc.). You need to explicitly define the implementation for each HTTP method you want to support. On the other hand, ViewSet is a class that combines multiple actions into a single class by using methods such as list(), create(), retrieve(), update(), etc. It provides a high-level abstraction and handles different actions based on the HTTP method automatically.
+
+Routing: With APIView, you need to manually configure the URL routing for each method. You define separate URL patterns for each HTTP method you want to support. ViewSet, on the other hand, automatically generates the appropriate URLs and routing based on the actions defined within the class.
+
+
+Authorization and Permission class
+***********************************
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permission_class import IsAuthenticated
+
+class StudentModelViewSet(viewset.ModelViewset):
+    queryset = Student.objects.all()
+    serializer_class = StduentSerializer
+    authentication_class = [BasicAuthentication,
+                            SessionAuthentication]
+
+    permission_class = [IsAuthenticated,
+    IsAuthenticated, AllowAny,IsAdminUser, IsAutehnticatedOrReadOnly]
+
+Throttling
+*************************
+user request 5 in 1 day manage reques
+
+
+
+
